@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -207,30 +206,18 @@
             </div>
         </div>
     </div>
-    <!-- Footer End -->
- <!-- php -->
- <?php 
-
+<?php 
 if (isset($_GET['email']) && isset($_GET['pass'])) {
-    // code...
-
 include('database_conn.php');
-
 $email = $_GET['email'];
 $pass = $_GET['pass'];
-
 $sql = "SELECT * FROM administrator WHERE email = '$email' AND password = '$pass'";
 $result = $conn->query($sql);
-
-if(($email == $email) && ($pass == $pass)) {
-    
-  //login success
-  header("Location:.\candidateedit(admin).html.php");
-  exit();
+if($result->num_rows > 0) {
+    echo "<script>window.location.href='admin_cpanel.php'</script>";
 }
  else {
-  //no user found
-  echo '<script>alert("Sorry!! No such user found")</script>';
+  echo '<script>alert("Invalid Credentials! Please try again.")</script>';
 }
 }
 ?>

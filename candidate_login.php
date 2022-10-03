@@ -1,5 +1,3 @@
-<?php  ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -92,7 +90,7 @@
 
     <!-- login form -->
      <!-- Appointment Start -->
-     <form method="GET" action="admin_log.php">
+     <form method="GET" action="">
     <div class="container-fluid py-5">
         <div class="container py-5">
             <div class="bg-appointment rounded">
@@ -102,16 +100,15 @@
                             <h1 class="text-center text-white mb-4">Candidate Sign In</h1>
                             <form>
                                 <div class="form-group">
-                                    <input type="email" class="form-control border-0 p-4" placeholder="Email" required="required" />
+                                    <input type="email" class="form-control border-0 p-4" name="email" placeholder="Email" required="required" />
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control border-0 p-4" placeholder="Password" required="required" />
+                                    <input type="password" class="form-control border-0 p-4" name="pass" placeholder="Password" required="required" />
                                 </div>
                                 <div>
                                     <button class="btn btn-primary btn-block border-0 py-3" type="submit">Sign In</button>
                                 </div>
                                 <p style="text-align: center; margin-top: 20px;">Can't login?<a href="mailto:E4votehelper@example.com">Report</a></p>
-                                
                             </form>
                         </div>
                     </div>
@@ -209,6 +206,22 @@
         </div>
     </div>
     <!-- Footer End -->
+<?php 
+if (isset($_GET['email']) && isset($_GET['pass'])) {
+include('database_conn.php');
+$email = $_GET['email'];
+$pass = $_GET['pass'];
+$sql = "SELECT * FROM candidate WHERE email = '$email' AND password = '$pass'";
+$result = $conn->query($sql);
+if($result->num_rows > 0) {
+    // echo "<script>window.location.href='candidate_cpanel.php'</script>";
+    echo "success";
+}
+ else {
+  echo '<script>alert("Invalid Credentials! Please try again.")</script>';
+}
+}
+?>
 
 </body>
 </html>

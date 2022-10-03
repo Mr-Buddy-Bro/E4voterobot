@@ -1,8 +1,6 @@
-
 <?php 
 $full = FALSE;
- ?>
-
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -260,7 +258,6 @@ $full = FALSE;
 
     <!-- php -->
     <?php 
-
         if (isset($_GET['name']) && isset($_GET['gender']) && isset($_GET['college_name']) && isset($_GET['department']) && isset($_GET['position']) && isset($_GET['mobile'])) {
             // code...
 
@@ -315,6 +312,5 @@ $full = FALSE;
     }
 }
     ?>
-
 </body>
 </html>

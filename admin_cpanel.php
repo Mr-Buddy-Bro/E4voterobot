@@ -3,8 +3,7 @@
 
 
 ?>
-
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -85,9 +84,8 @@
                             <a href="about.html" class="nav-item nav-link">About</a>
                             <a href="service.html" class="nav-item nav-link">Vote</a>
                             <a href="team.html" class="nav-item nav-link">Results</a>
-                            <a href="candidate_login.php" class="nav-item nav-link">Candidate login</a>
-                            <a href="administrator_login.php" class="nav-item nav-link">Administrator login</a>
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="administrator_login.php" class="nav-item nav-link">Logout</a>
                         </div>
                         <a href="rules.html" class="btn btn-primary mr-3 d-none d-lg-block">General rules</a>
                     </div>
