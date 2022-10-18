@@ -239,7 +239,7 @@
                 // Handle on success condition with the decoded text or result.
                 console.log(`Scan result: ${decodedText}`, decodedResult);
                 // conditions
-                location.href = "voting.html";
+                location.href = "voting_page.php?result="+decodedText+"";
             }
 
             var html5QrcodeScanner = new Html5QrcodeScanner(

@@ -1,16 +1,44 @@
-<?php  
-// require 'database_conn.php';
+<?php
+    include('database_conn.php');
+    $sql = "SELECT * FROM Administrator WHERE id='1'";
+    $result = $conn->query($sql);
 
+    $id = '';
+    $name = '';
+    $college_name = '';
+    $department = '';
+    $position = '';
+    $elec_name = '';
+    $date = '';
+    $description = '';
+
+    if ($result->num_rows > 0) {
+      // output data of each row
+      while($row = $result->fetch_assoc()) {
+        $id = $row["id"];
+        $name = $row["name"];
+        $elec_name = $row["election name"];
+        $college_name = $row["collage name"];
+        $department = $row["department"];
+        $position = $row["position"];
+        $date = $row["_date"];
+        $description = $row["description"];
+    }
+    } else {
+      echo "0 results";
+    }
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Admin cPanel</title>
-	 <meta content="Free HTML Templates" name="keywords">
+    <meta charset="utf-8">
+    <title>E4vote -  online election center for election</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
+    <meta http-equiv="Cache-control" content="no-cache">
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -28,10 +56,13 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-</head>
-<body>
 
- <!-- Header Start -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <!-- Header Start -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-3 bg-secondary d-none d-lg-block">
@@ -53,7 +84,7 @@
                     </div>
                     <div class="col-lg-5 text-right">
                         <div class="d-inline-flex align-items-center p-2">
-                            <a class="btn btn-sm btn-outline-primary btn-sm-square mr-2" href="www.facebook.com">
+                            <a class="btn btn-sm btn-outline-primary btn-sm-square mr-2" href="https://www.facebook.com/profile.php?id=100084697125351">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
                             <a class="btn btn-sm btn-outline-primary btn-sm-square mr-2" href="www.twitter.com">
@@ -80,12 +111,10 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link active">Home</a>
-                            <a href="about.html" class="nav-item nav-link">About</a>
-                            <a href="service.html" class="nav-item nav-link">Vote</a>
-                            <a href="team.html" class="nav-item nav-link">Results</a>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
-                            <a href="administrator_login.php" class="nav-item nav-link">Logout</a>
+                            <a href=".\admin_cpanel.php" class="nav-item nav-link active">Admin</a>
+                            <a href="candidate_details.php?filter=0" class="nav-item nav-link">Candiate Details</a>
+                            <a href="#" class="nav-item nav-link">Voter Details</a>
+                            <a href=".\administrator_login.php" class="nav-item nav-link">Logout</a>
                         </div>
                         <a href="rules.html" class="btn btn-primary mr-3 d-none d-lg-block">General rules</a>
                     </div>
@@ -94,9 +123,51 @@
         </div>
     </div>
     <!-- Header End -->
+    <div id="panel_content">
+        <div>
+            <br>
+            <h1>Election Details</h1>
+            <p style="font-weight: bold;font-size: 20px;">NAME : <?php echo $elec_name; ?></p>
+            <p>CONDUCT DATE : <?php echo $date; ?></p>
+        </div><br>
+        <div style="margin-top: 15px;">
+            <h2>College name</h1>
+            <p style="font-weight: bold;font-size: 18px;">(<?php echo $college_name; ?>)</p>
+        </div>
+        <div><h6 id="edit_btn" onclick="on_edit()" style="color: white; text-align: center; margin: 30px 0; padding: 8px 25px; border-color: #8f7528; cursor: pointer; font-weight: bold; background-color: #8f7528; border-radius: 10px;">Edit</button></div>
+    </div>
+    <hr>
+    <div style="margin: 50px auto; width: 70%;">
+        <p style="color: black; border: 1px solid #fcc058; border-radius: 10px; background-color: #fcc058; padding: 10px;"><?php echo $description; ?></p>
+    </div>
 
-<!-- Footer Start -->
-<div class="container-fluid bg-secondary text-white pt-5 px-sm-3 px-md-5" style="margin-top: 90px;">
+    <!-- popup -->
+     <div class="popup" id="popup" style="visibility: hidden;">
+        <h2 style="color:white;font-weight:bold;width: 100%; text-align: right; cursor:pointer;" onclick="btn_close_pop()">x</h2>
+        <center>
+            
+
+                <h2 style="color: #DE9D06">Edit Election details</h2>
+                <p style="color: white">Make changes and save it from here.</p>
+                <input type="text" id="elec_name" placeholder="Election name"><br>
+                <label style="color: white" class="my_date">Election conduct date</label><br>
+                <input type="date" id="elec_con_date" placeholder="Election conduct date"><br>
+                <label style="color: white" class="my_date">Candidate details submission date</label><br>
+                <input type="date" id="elec_sub_date" placeholder="submission date"><br><br>
+                <input type="text" id="elec_desc" placeholder="description"><br><br>
+                <input type="checkbox" id="agree" style="width: 10px;"><label style="color: red; margin-left: 10px;"><span style="color: #09FF00;">I agree</span> all the above details are correct.</label></input>
+                <br>
+                <button onclick="on_save()" style="background-color: #DE9D06;border-radius: 20px; font-weight: bold;  padding: 10px 50px;">Save</button>
+        
+            
+        </center>
+     </div>
+
+     <!-- popup end -->
+
+     
+    <!-- Footer Start -->
+    <div class="container-fluid bg-secondary text-white pt-5 px-sm-3 px-md-5" style="margin-top: 90px;">
         <div class="row mt-5">
             <div class="col-lg-4">
                 <div class="d-flex justify-content-lg-center p-4" style="background: rgba(256, 256, 256, .05);">
@@ -182,6 +253,59 @@
         </div>
     </div>
     <!-- Footer End -->
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary px-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-    </body>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+<!--php to ddisplay-->
+
+</body>
+<script type="text/javascript">
+    let popup = document.getElementById('popup');
+
+    function on_edit(){
+        popup.style.visibility = "visible";
+    }
+    function on_save(){
+
+        let e_name = document.getElementById('elec_name').value;
+        let elec_con_date = document.getElementById('elec_con_date').value;
+        let elec_sub_date = document.getElementById('elec_sub_date').value;
+        let elec_desc = document.getElementById('elec_desc').value;
+        let agree = document.getElementById('agree').value;
+        // let e_name = "hi";
+
+        $.ajax({
+            type: "POST",
+            url: "evote_php_cripts.php",
+            data: {'elec_name' : e_name, 'elec_con_date' : elec_con_date,'elec_sub_date' : elec_sub_date,'elec_desc' : elec_desc,'agree' : agree},
+            success: function(){
+                window.location.reload();
+            }
+        });
+
+        popup.style.visibility = "hidden";
+    }
+    function btn_close_pop(){
+        popup.style.visibility = "hidden";
+    }
+
+</script>
+
 </html>
