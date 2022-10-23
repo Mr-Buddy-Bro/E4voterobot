@@ -1,44 +1,17 @@
 <?php
+
+    $filter = $_GET['filter'];
     include('database_conn.php');
 
-    $adm_id = $_GET['id'];
-    if (!isset($adm_id)) {
-        if (isset($_COOKIE['adm_id'])) {
-            $adm_id = $_COOKIE['adm_id'];
-        }
+    if (!isset($_GET['filter'])) {
+        $sql = "SELECT * FROM candidate WHERE role=1 ";
     }
-
-    $sql = "SELECT * FROM administrator WHERE id='$adm_id' ";
+    else{
+        $sql = "SELECT * FROM candidate WHERE role=$filter";
+    }
     $result = $conn->query($sql);
 
-    $id = '';
-    $name = '';
-    $college_name = '';
-    $department = '';
-    $position = '';
-    $elec_name = '';
-    $date = '';
-    $description = '';
-
-    if ($result->num_rows > 0) {
-      // output data of each row
-      while($row = $result->fetch_assoc()) {
-        $id = $row["id"];
-        $name = $row["name"];
-        $elec_name = $row["election name"];
-        $college_name = $row["collage name"];
-        $department = $row["department"];
-        $position = $row["position"];
-        $date = $row["_date"];
-        $description = $row["description"];
-    }
-    setcookie('adm_id', $adm_id, time() + (86400), "/"); // 86400 = 1 day
-    } else {
-      echo "0 results";
-    }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,7 +21,6 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
-    <meta http-equiv="Cache-control" content="no-cache">
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -66,8 +38,6 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 </head>
 
@@ -121,10 +91,13 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href=".\admin_cpanel.php" class="nav-item nav-link active">Admin</a>
-                            <a href="candidate_details.php?filter=0" class="nav-item nav-link">Candiate Details</a>
-                            <a href="#" class="nav-item nav-link">Voter Details</a>
-                            <a href=".\administrator_login.php" class="nav-item nav-link">Logout</a>
+                            <a href="index.html" class="nav-item nav-link">Home</a>
+                            <a href="about.html" class="nav-item nav-link">About</a>
+                            <a href="service.html" class="nav-item nav-link active">Vote</a>
+                            <a href="team.html" class="nav-item nav-link">Results</a>
+                            <a href="candidate_login.php" class="nav-item nav-link">Candidate login</a>
+                            <a href="administrator_login.php" class="nav-item nav-link">Administrator login</a>
+                            <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <a href="rules.html" class="btn btn-primary mr-3 d-none d-lg-block">General rules</a>
                     </div>
@@ -133,48 +106,68 @@
         </div>
     </div>
     <!-- Header End -->
-    <div id="panel_content">
-        <div>
-            <br>
-            <h1>Election Details</h1>
-            <p style="font-weight: bold;font-size: 20px;">NAME : <?php echo $elec_name; ?></p>
-            <p>CONDUCT DATE : <?php echo $date; ?></p>
-        </div><br>
-        <div style="margin-top: 15px;">
-            <h2>College name</h1>
-            <p style="font-weight: bold;font-size: 18px;">(<?php echo $college_name; ?>)</p>
+
+    <div class="cen_content">
+        <h1>Candidates</h1>
+
+        <br>
+        <select onchange="onfilter()" id="filter" name="filter" style="border: 2px solid #8f7528;padding: 10px; border-radius: 20px;">
+            <option value="-1">--Choose--</option>
+            <option value="1">CHAIRMAN</option>
+            <option value="2">VICE CHAIRMAN</option>
+            <option value="3">SECRETARY</option>
+            <option value="4">JOINT SECREATARY</option>
+            <option value="5">COUNCILOR</option>
+            <option value="6">SERETARY FINE ARTS CLUB</option>
+            <option value="7">MAGAZINE EDITOR</option>
+            <option value="8">GENERAL CAPTAIN</option>
+            <option value="9">II DC REPRESENTATIVE</option>
+            <option value="10">III DC REPRESENTATIVE</option>
+            <option value="11">PG REPRESENTATIVE</option>
+        </select>
+
+       
+        <div style="display: block;justify-content: center; margin: 50px 0;">
+            
+        <?php
+            if ($result->num_rows > 0) {
+              // output data of each row
+                $i = 1;
+              while($row = $result->fetch_assoc()) {
+                
+                $id = $row["id"];
+                $fname = $row["first name"];
+                $lname = $row["last name"];
+                $photo_url = $row["photo url"];
+                $age = $row["age"];
+                $department = $row["department"];
+                $class = $row["class"];
+                $email = $row["email"];
+                $mobile = $row["mobile"];
+                $year_of_adm = $row["year of admission"];
+                $msg = $row["message"];
+                $description = $row["description"];
+                 echo "<div class='card' style='width: 18rem; display: inline-block;'>
+                      <img src='img/".$photo_url."' width='100%' class='card-img-top' alt='...'>
+                      <div class='card-body'>
+                        <h5 class='card-title'>".$fname." ".$lname."</h5>
+                        <p class='card-text'>".$description."</p>
+                        <a href='cand_details_edit.php?id=".$id."' class='btn btn-primary'>Details</a>
+                      </div>
+                    </div>";
+                    if ($i==4) {
+                    echo "<br><br>";
+                    $i = 0;
+                    }
+                    $i = $i+1;
+            }
+            } else {
+              echo "0 results";
+            }
+        ?>
         </div>
-        <div><h6 id="edit_btn" onclick="on_edit()" style="color: white; text-align: center; margin: 30px 0; padding: 8px 25px; border-color: #8f7528; cursor: pointer; font-weight: bold; background-color: #8f7528; border-radius: 10px;">Edit</button></div>
-    </div>
-    <hr>
-    <div style="margin: 50px auto; width: 70%;">
-        <p style="color: black; border: 1px solid #fcc058; border-radius: 10px; background-color: #fcc058; padding: 10px;"><?php echo $description; ?></p>
-    </div>
-
-    <!-- popup -->
-     <div class="popup" id="popup" style="visibility: hidden;">
-        <h2 style="color:white;font-weight:bold;width: 100%; text-align: right; cursor:pointer;" onclick="btn_close_pop()">x</h2>
-        <center>
-            
-
-                <h2 style="color: #DE9D06">Edit Election details</h2>
-                <p style="color: white">Make changes and save it from here.</p>
-                <input type="text" id="elec_name" placeholder="Election name"><br>
-                <label style="color: white" class="my_date">Election conduct date</label><br>
-                <input type="date" id="elec_con_date" placeholder="Election conduct date"><br>
-                <label style="color: white" class="my_date">Candidate details submission date</label><br>
-                <input type="date" id="elec_sub_date" placeholder="submission date"><br><br>
-                <input type="text" id="elec_desc" placeholder="description"><br><br>
-                <input type="checkbox" id="agree" style="width: 10px;"><label style="color: red; margin-left: 10px;"><span style="color: #09FF00;">I agree</span> all the above details are correct.</label></input>
-                <br>
-                <button onclick="on_save()" style="background-color: #DE9D06;border-radius: 20px; font-weight: bold;  padding: 10px 50px;">Save</button>
         
-            
-        </center>
-     </div>
-
-     <!-- popup end -->
-
+    </div>
      
     <!-- Footer Start -->
     <div class="container-fluid bg-secondary text-white pt-5 px-sm-3 px-md-5" style="margin-top: 90px;">
@@ -283,32 +276,45 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-<!--php to ddisplay-->
-
-</body>
-<script type="text/javascript">
+    <script type="text/javascript">
     let popup = document.getElementById('popup');
 
-    function on_edit(){
+    function on_add_candidate(){
+
         popup.style.visibility = "visible";
     }
+    function onfilter(){
+        let filt = document.getElementById("filter").value;
+        window.location.assign("./vote.php?filter="+filt);
+    }
     function on_save(){
-
-        let e_name = document.getElementById('elec_name').value;
-        let elec_con_date = document.getElementById('elec_con_date').value;
-        let elec_sub_date = document.getElementById('elec_sub_date').value;
-        let elec_desc = document.getElementById('elec_desc').value;
+        let f_name = document.getElementById('f_name').value;
+        let l_name = document.getElementById('l_name').value;
+        let photo = document.getElementById('photo').value;
+        let age = document.getElementById('age').value;
+        let gender = document.getElementById('gender').value;
+        let department = document.getElementById('department').value;
+        let _class = document.getElementById('class').value;
+        let email = document.getElementById('email').value;
+        let mobile = document.getElementById('mobile').value;
+        let y_o_a = document.getElementById('y_o_a').value;
+        let role = document.getElementById('role').value;
+        let message = document.getElementById('message').value;
+        let description = document.getElementById('description').value;
+        let password = document.getElementById('password').value;
+        let repassword = document.getElementById('repassword').value;
         let agree = document.getElementById('agree').value;
+
         // let e_name = "hi";
 
-        $.ajax({
-            type: "POST",
-            url: "evote_php_cripts.php",
-            data: {'elec_name' : e_name, 'elec_con_date' : elec_con_date,'elec_sub_date' : elec_sub_date,'elec_desc' : elec_desc,'agree' : agree},
-            success: function(){
-                window.location.reload();
-            }
-        });
+        // $.ajax({
+        //     type: "POST",
+        //     url: "add_candidate.php",
+        //     data: {'f_name' : f_name, 'l_name' : l_name,'photo' : photo,'age' : age,'department' : department,'class' : _class,'email' : email,'mobile' : mobile,'y_o_a' : y_o_a,'message' : message,'description' : description,'gender' : gender,'password' : password,'repassword' : repassword,'agree' : agree, 'role':role},
+        //     success: function(){
+        //         // window.location.reload();
+        //     }
+        // });
 
         popup.style.visibility = "hidden";
     }
@@ -317,5 +323,8 @@
     }
 
 </script>
+<!--php to ddisplay-->
+
+</body>
 
 </html>

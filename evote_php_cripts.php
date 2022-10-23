@@ -5,6 +5,7 @@
         $con_date = $_POST['elec_con_date'];
         $sub_date = $_POST['elec_sub_date'];
         $desc = $_POST['elec_desc'];
+        $adm_id = $_COOKIE['adm_id'];
 
         $curDate = date("Y-m-d");
         $validDate = FALSE;
@@ -18,7 +19,7 @@
 
         if($validDate || TRUE){
 
-        $sql = "UPDATE `administrator` SET `election name` = '$elec_name', `_date` = '$con_date', `candidate due date` = '$sub_date', `description` = '$desc' WHERE id=1";
+        $sql = "UPDATE `administrator` SET `election name` = '$elec_name', `_date` = '$con_date', `candidate due date` = '$sub_date', `description` = '$desc' WHERE id='$adm_id'";
 
         if ($conn->query($sql) === TRUE) {
             // new recorde done...

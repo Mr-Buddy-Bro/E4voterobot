@@ -214,7 +214,9 @@ $pass = $_GET['pass'];
 $sql = "SELECT * FROM administrator WHERE email = '$email' AND password = '$pass'";
 $result = $conn->query($sql);
 if($result->num_rows > 0) {
-    echo "<script>window.location.href='admin_cpanel.php'</script>";
+    $row = $result->fetch_assoc();
+    $id = $row['id'];
+    echo "<script>window.location.href='admin_cpanel.php?id=".$id."'</script>";
 }
  else {
   echo '<script>alert("Invalid Credentials! Please try again.")</script>';
