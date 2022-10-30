@@ -240,18 +240,18 @@
                 console.log(`Scan result: ${decodedText}`, decodedResult);
                 // conditions
 
-                // location.href = "voting_page.php?result="+decodedText+""; // to send verification mail
+                location.href = "voting_page.php?result="+decodedText; // to send verification mail
 
                 //testing
-                let result = decodedText;
-                let email = '';
+                // let result = decodedText;
+                // let email = '';
 
-                let t_email_pos = result.indexOf("Email.");
-                let t_email = result.substring(t_email_pos);
-                let email_pos = t_email.indexOf(".");
-                email = t_email.substring(email_pos+1).toLowerCase();
+                // let t_email_pos = result.indexOf("Email.");
+                // let t_email = result.substring(t_email_pos);
+                // let email_pos = t_email.indexOf(".");
+                // email = t_email.substring(email_pos+1).toLowerCase();
 
-                location.href = "vote.php?voter_id="+email+""; // for test voting
+                // location.href = "vote.php?voter_id="+email+""; // for test voting
             }
 
             var html5QrcodeScanner = new Html5QrcodeScanner(

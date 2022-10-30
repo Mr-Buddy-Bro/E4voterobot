@@ -1,15 +1,45 @@
 <?php
+include('database_conn.php');
+
+
+    $email = $_GET['email'];
+
+    if (isset($email)) {
+        setcookie('v_email', $email, time() + (86400), "/");
+    }else{
+        $email = $_COOKIE['v_email'];
+    }
 
     $filter = $_GET['filter'];
-    include('database_conn.php');
+    
 
-    if (!isset($_GET['filter'])) {
-        $sql = "SELECT * FROM candidate WHERE role=1 ";
+    
+    // $row = $result->fetch_assoc();
+
+//get voter
+    $msql = "SELECT * FROM voter WHERE email='$email'";
+    $mresult = $conn->query($msql);
+    $mrow = $mresult->fetch_assoc();
+
+    if ($mresult->num_rows > 0) {
+      // output data of each row
+
+    } else {
+      echo "0 results";
     }
-    else{
-        $sql = "SELECT * FROM candidate WHERE role=$filter";
-    }
-    $result = $conn->query($sql);
+
+    // function getCandidates($value)
+    // {
+    //     if (!isset($value)) {
+    //         $sql = "SELECT * FROM candidate WHERE role=1 ";
+    //         $result = $conn->query($sql);
+    //     }
+    //     else{
+    //         $sql = "SELECT * FROM candidate WHERE role=$value";
+    //         $result = $conn->query($sql);
+    //     }
+        
+    // }
 
 ?>
 <!DOCTYPE html>
@@ -38,7 +68,43 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <script src="jquery-3.6.0.min.js"></script>
 
+<style>
+    .choose-btn{
+    padding: 10px 20px; 
+    border-radius: 50px;
+    border: 1px solid rgb(62, 68, 72);
+    color: white; 
+    font-weight: bold;
+    align-items: center;
+    background-color: #b49c73;
+    text-align: center;
+    }
+    .choose-btn-disabled{
+    padding: 10px 20px; 
+    border-radius: 50px;
+    border: 1px solid rgb(62, 68, 72);
+    color: white; 
+    font-weight: bold;
+    height: 50px;
+    align-items: center;
+    background-color: grey;
+    text-align: center;
+    cursor: not-allowed;
+    }
+    .choose-btn:hover{
+    background-color: rgb(76, 11, 255);
+    cursor: pointer;
+    }
+    .line{
+/*    color: black;
+    width:2px;
+    height: 2px;
+    background-color: gray;*/
+    }
+
+</style>
 </head>
 
 <body>
@@ -108,9 +174,134 @@
     <!-- Header End -->
 
     <div class="cen_content">
+
+        <!-- ##################################################################### -->
         <h1>Candidates</h1>
 
+        <div style="align-items: center;">
+            <!-- put a for loop over here  -->
+            <?php
+            
+                //////////////////////////////////////
+                if ($mrow['v_chairman'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_chairman\',1)">CHAIRMAN</div><div style="display:none" id="v_chairman"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled" ">CHAIRMAN</div>'; 
+
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                //////////////////////////////////////
+                if ($mrow['v_vice_chairman'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_vice_chairman\',2)">VICE CHAIRMAN</div><div style="display:none" id="v_vice_chairman"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled">VICE CHAIRMAN</div>'; 
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                //////////////////////////////////////
+                if ($mrow['v_secretary'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_secretary\',3)">SECRETARY</div><div style="display:none" id="v_secretary"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled">SECRETARY</div>'; 
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                //////////////////////////////////////
+                if ($mrow['v_joint_secretary'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_joint_secretary\',4)">JOINT SECRETARY</div><div style="display:none" id="v_joint_secretary"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled">JOINT SECRETARY</div>'; 
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                //////////////////////////////////////
+                if ($mrow['v_counsilor'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_counsilor\',5)">COUNSILOR</div><div style="display:none" id="v_counsilor"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled">COUNSILOR</div>'; 
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                //////////////////////////////////////
+                if ($mrow['v_secretary_fine_arts_club'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_secretary_fine_arts_club\',6)">SECRETARY FINE ARTS CLUB</div><div style="display:none" id="v_secretary_fine_arts_club"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled">SECRETARY FINE ARTS CLUB</div>'; 
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                //////////////////////////////////////
+                if ($mrow['v_magazine_editor'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_magazine_editor\',7)">MAGAZINE EDITOR</div><div style="display:none" id="v_magazine_editor"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled">MAGAZINE EDITOR</div>'; 
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                //////////////////////////////////////
+                if ($mrow['v_general_captain'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_general_captain\',8)">GENERAL CAPTAIN</div><div style="display:none" id="v_general_captain"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled">GENERAL CAPTAIN</div>'; 
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                //////////////////////////////////////
+                if ($mrow['v_II_dc_representative'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_II_dc_representative\',9)">II DC REPRESENTATIVE</div><div style="display:none" id="v_II_dc_representative"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled">II DC REPRESENTATIVE</div>'; 
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                //////////////////////////////////////
+                if ($mrow['v_III_dc_representative'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_III_dc_representative\',10)">III DC REPRESENTATIVE</div><div style="display:none" id="v_III_dc_representative"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled">III DC REPRESENTATIVE</div>'; 
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                //////////////////////////////////////
+                if ($mrow['v_pg_dc_representative'] == 0) {
+                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_pg_dc_representative\',11)">PG DC REPRESENTATIVE</div><div style="display:none" id="v_pg_dc_representative"></div>'; 
+                }
+                else{
+                    echo '<div class="choose-btn-disabled">PG DC REPRESENTATIVE</div>'; 
+                }
+                echo '<div><hr class="line" ></div>';
+
+                // //////////////////////////////////
+                
+            
+            ?>
+
+        </div>
+
+    <!-- ############################################# -->
         <br>
+
         <select onchange="onfilter()" id="filter" name="filter" style="border: 2px solid #8f7528;padding: 10px; border-radius: 20px;">
             <option value="-1">--Choose--</option>
             <option value="1">CHAIRMAN</option>
@@ -128,43 +319,7 @@
 
        
         <div style="display: block;justify-content: center; margin: 50px 0;">
-            
-        <?php
-            if ($result->num_rows > 0) {
-              // output data of each row
-                $i = 1;
-              while($row = $result->fetch_assoc()) {
-                
-                $id = $row["id"];
-                $fname = $row["first name"];
-                $lname = $row["last name"];
-                $photo_url = $row["photo url"];
-                $age = $row["age"];
-                $department = $row["department"];
-                $class = $row["class"];
-                $email = $row["email"];
-                $mobile = $row["mobile"];
-                $year_of_adm = $row["year of admission"];
-                $msg = $row["message"];
-                $description = $row["description"];
-                 echo "<div class='card' style='width: 18rem; display: inline-block;'>
-                      <img src='img/".$photo_url."' width='100%' class='card-img-top' alt='...'>
-                      <div class='card-body'>
-                        <h5 class='card-title'>".$fname." ".$lname."</h5>
-                        <p class='card-text'>".$description."</p>
-                        <a href='cand_details_edit.php?id=".$id."' class='btn btn-primary'>Details</a>
-                      </div>
-                    </div>";
-                    if ($i==4) {
-                    echo "<br><br>";
-                    $i = 0;
-                    }
-                    $i = $i+1;
-            }
-            } else {
-              echo "0 results";
-            }
-        ?>
+        
         </div>
         
     </div>
@@ -277,6 +432,71 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script type="text/javascript">
+
+    function candidate_detail(data, filter){
+
+        console.log('trying..')
+        console.log(filter);
+        // document.getElementById('detail').display ='block' ;
+        console.log('its block')
+        if (document.getElementById(data).style.display =='block')
+        {
+            document.getElementById(data).style.display ='none'
+        }
+        else{
+            $.ajax({
+                url:'get_candidate.php',
+                method:'POST',
+                data: {'filter':filter},
+                success:function(resu){
+                    console.log('res : '+resu)
+                    // document.write(res);
+                }
+            })
+            document.getElementById(data).style.display ='block'
+            document.getElementById(data).innerHTML='<h1>Hi </h1><?php
+
+
+
+
+            // $sql = "SELECT * FROM candidate WHERE role=$filter";
+            // $result = $conn->query($sql);
+            echo '${filter}';
+            if ($result->num_rows > 0) {
+              // output data of each row
+
+                $i = 1;
+              while($row = $result->fetch_assoc()) {
+                $id = $row["id"];
+                $fname = $row["first name"];
+                $lname = $row["last name"];
+                $photo_url = $row["photo url"];
+                $age = $row["age"];
+                $department = $row["department"];
+                $class = $row["class"];
+                $email = $row["email"];
+                $mobile = $row["mobile"];
+                $year_of_adm = $row["year of admission"];
+                $msg = $row["message"];
+                $description = $row["description"];
+
+                 echo "<div><div class=\"card\" style=\"width: 18rem; display: inline-block;\"><img src=\"img/".$photo_url."\" width=\"100%\" class=\"card-img-top\"><div class=\"card-body\"><h5 class=\"card-title\">".$fname." ".$lname."</h5><p class=\"card-text\">".$description."</p><a href=\"cand_details_edit.php?id=".$id."\" class=\"btn btn-primary\">Details</a></div></div>";
+
+                if ($i==4) {
+                echo "<br><br>";
+                $i = 0;
+                }
+                $i = $i+1;
+              }
+
+            } else {
+              echo "0 candidate results";
+            }
+        ?>'
+
+        }
+    }
+
     let popup = document.getElementById('popup');
 
     function on_add_candidate(){
