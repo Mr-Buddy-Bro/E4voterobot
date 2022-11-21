@@ -105,77 +105,97 @@
     <!-- Header End -->
 
     <!-- popup -->
-     <div class="popup" id="popup" style="visibility: hidden; z-index: 1">
-        <h2 style="color:white;font-weight:bold;width: 100%; text-align: right; cursor:pointer;" onclick="btn_close_pop()">x</h2>
-        <center>
-                <h2 style="color: #DE9D06">Add new candidate</h2>
-                <p style="color: white">fill the below details off the candidate to condinue.</p>
+     <!-- <div class="popup" id="popup" style="visibility: hidden; z-index: 1"> -->
 
-            <form method="POST" action="add_candidate.php" enctype="multipart/form-data">
-            <table cellpadding="10">
-
-                <tr>
-                    <td><input type="text" name="f_name" id="f_name" placeholder="first name"></td>
-                    <td><input type="text" name="l_name" id="l_name" placeholder="last name"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="age" id="age" placeholder="age"></td>
-                    <td><select class="custom-select border-0 px-4" style="height: 47px; width: 250px; border-radius: 50px;" name="gender" id="gender">
-                        <option selected>Gender</option>
-                        <option value="1">Male</option>
-                        <option value="2">Female</option>
-                        <option value="3">Other</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center"><label style="color: white" class="my_date">Upload a photo</label><br>
-                    <input type="file" id="photo" name="photo" placeholder="photo" style="color: white;"><br><br></td>
-                </tr>
-
-                <tr>
-                     <td><input type="text" name="department" id="department" placeholder="department"></td>
-                     <td><input type="text" name="class" id="class" placeholder="class"></td>
-                </tr>
-                <tr>
-                     <td><input type="text" name="email" id="email" placeholder="email"></td>
-                     <td><input type="text" name="mobile" id="mobile" placeholder="mobile"></td>
-                </tr>
-
-                 <tr>
-                    <td><select class="custom-select border-0 px-4" style="height: 47px; width: 250px; border-radius: 50px;" name="role" id="role">
-                        <option selected>--Select Role--</option>
-                        <option value="1">CHAIRMAN</option>
-                        <option value="2">VICE CHAIRMAN</option>
-                        <option value="3">SECRETARY</option>
-                        <option value="4">JOINT SECREATARY</option>
-                        <option value="5">COUNCILOR</option>
-                        <option value="6">SERETARY FINE ARTS CLUB</option>
-                        <option value="7">MAGAZINE EDITOR</option>
-                        <option value="8">GENERAL CAPTAIN</option>
-                        <option value="9">II DC REPRESENTATIVE</option>
-                        <option value="10">III DC REPRESENTATIVE</option>
-                        <option value="11">PG REPRESENTATIVE</option>
-                    </select></td>
-               
-               
-                    <td><input type="text" name="y_o_a" id="y_o_a" placeholder="year of admission"></td>
-                </tr>
-
-                <tr>
-                    <td><input type="text" name="message" id="message" placeholder="message"></td>
-                    <td><input type="text" name="description" id="description" placeholder="description"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="password" id="password" placeholder="password"></td>
-                    <td><input type="text" name="repassword" id="repassword" placeholder="re-password"></td>
-                </tr>
-            </TABLE>
-                <input type="checkbox" name="agree" id="agree" style="width: 10px;margin-top: 20px;"><label style="color: red; margin-left: 10px;"><span style="color: #09FF00;">I agree</span> all the above details are correct.</label></input>
-                <br>
-                <button onclick="on_save()" name="submit" type="submit" style="background-color: #DE9D06;border-radius: 20px; font-weight: bold;  padding: 10px 50px;">Save</button>
+         <form method="POST" action="add_candidate.php" enctype="multipart/form-data" name="new_cand" id="popup" style="display: none;">
+            <div class="container-fluid py-5">
+                <div class="container py-5">
+                    <div class="bg-appointment rounded">
+                        <div class="row h-100 align-items-center justify-content-center">
+                            <div class="col-lg-6 py-5">
+                                <div class="rounded p-5 my-5" style="background: rgba(55, 55, 63, .7);">
+                                    <h1 class="text-center text-white mb-4">Add New Candidate</h1>
+                                    <p style="color: white">fill the below details off the candidate to condinue.</p>
+                                    <form>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="f_name" id="f_name" placeholder="first name">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="l_name" id="l_name" placeholder="last name">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="age" id="age" placeholder="age">
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="custom-select border-0 px-4" style="height: 47px; width: 250px; border-radius: 50px;" name="gender" id="gender">
+                                                <option selected>Gender</option>
+                                                <option value="1">Male</option>
+                                                <option value="2">Female</option>
+                                                <option value="3">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="color: white">Upload a photo</label><br>
+                                            <input class="form-control border-0" type="file" id="photo" name="photo" placeholder="photo" style="color: black;">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="department" id="department" placeholder="department">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="class" id="class" placeholder="class">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="email" id="email" placeholder="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="mobile" id="mobile" placeholder="mobile">
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="custom-select border-0 px-4" style="height: 47px; width: 250px; border-radius: 50px;" name="role" id="role">
+                                                <option selected>--Select Role--</option>
+                                                <option value="1">CHAIRMAN</option>
+                                                <option value="2">VICE CHAIRMAN</option>
+                                                <option value="3">SECRETARY</option>
+                                                <option value="4">JOINT SECREATARY</option>
+                                                <option value="5">COUNCILOR</option>
+                                                <option value="6">SERETARY FINE ARTS CLUB</option>
+                                                <option value="7">MAGAZINE EDITOR</option>
+                                                <option value="8">GENERAL CAPTAIN</option>
+                                                <option value="9">II DC REPRESENTATIVE</option>
+                                                <option value="10">III DC REPRESENTATIVE</option>
+                                                <option value="11">PG REPRESENTATIVE</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="y_o_a" id="y_o_a" placeholder="year of admission">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="message" id="message" placeholder="message">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="description" id="description" placeholder="description">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="password" id="password" placeholder="password">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="repassword" id="repassword" placeholder="re-password">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="checkbox" name="agree" id="agree" style="width: 20px;margin-top: 20px;"><label style="color: red; margin-left: 10px;"><span style="color: #09FF00;">I agree</span> all the above details are correct.</label></input>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">Submit</button>
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </form>
-        </center>
-     </div>
 
      <!-- popup end -->
     <div class="cen_content">
@@ -353,7 +373,7 @@
 
     function on_add_candidate(){
 
-        popup.style.visibility = "visible";
+        popup.style.display = "block";
     }
     function onfilter(){
         let filt = document.getElementById("filter").value;
@@ -388,10 +408,10 @@
         //     }
         // });
 
-        popup.style.visibility = "hidden";
+        popup.style.display = "none";
     }
     function btn_close_pop(){
-        popup.style.visibility = "hidden";
+        popup.style.display = "none";
     }
 
 </script>

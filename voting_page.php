@@ -11,7 +11,7 @@ if (isset($result)) {
 	$email_pos = strpos($t_email, ".");
 	$email = strtolower(substr($t_email, $email_pos+1));
 
-	echo $email;
+	// echo $email;
 
 	$sql = "SELECT * FROM voter WHERE email='$email'";
 	$result = $conn->query($sql);
@@ -24,20 +24,27 @@ if (isset($result)) {
 	}
 	else{
 		echo " Voter not exist";
-		$sql = "INSERT INTO `voter`(`email`, `v_chairman`, `v_vice_chairman`, `v_secretary`, `v_joint_secretary`, `v_councilor`, `v_seretary_fine_arts_club`, `v_magazine_editor`, `v_general_captain`, `v_II_dc_representative`, `v_III_dc_representative`, `v_pg_dc_representative`) VALUES ('$email',0,0,0,0,0,0,0,0,0,0,0)";
+		
+        if (str_contains($email, '@')) {
+        	echo " Valid email";
+            	// code...
+        	$sql = "INSERT INTO `voter`(`email`, `v_chairman`, `v_vice_chairman`, `v_secretary`, `v_joint_secretary`, `v_councilor`, `v_seretary_fine_arts_club`, `v_magazine_editor`, `v_general_captain`, `v_II_dc_representative`, `v_III_dc_representative`, `v_pg_dc_representative`) VALUES ('$email',0,0,0,0,0,0,0,0,0,0,0)";
 
-        if ($conn->query($sql) === TRUE) {
-            // new recorde done...
-            echo 'success';
-            header("Location: ./vote.php?email=".$email);
-
-                //Check if image file is a actual image or fake image
-                
-
-        }else{
-            //failed
-            echo " record not created";
-        }
+		        if ($conn->query($sql) === TRUE) {
+		            // new recorde done...
+		            echo 'success';
+		            header("Location: ./vote.php?email=".$email);
+		                //Check if image file is a actual image or fake 
+		        }else{
+		            //failed to create record
+		            
+		        }
+            	
+            }
+            else{
+            	// header("Location: ./vote.php?email=".$email);
+            	echo " Invalid Code. Please Use your ID Card to continue";
+            }
 
 	}
 

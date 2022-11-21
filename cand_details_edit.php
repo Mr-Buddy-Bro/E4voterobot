@@ -1,7 +1,17 @@
 <?php
     $userid = $_GET['id'];
     include('database_conn.php');
+
+    if (isset($_GET['id'])) {
+        setcookie('id', $userid, time() + (86400 * 30), "/");
+    }
+    else
+    {
+        $userid = $_COOKIE['id'];
+    }
+
     $sql = "SELECT * FROM candidate WHERE id='$userid'";
+
     $result = $conn->query($sql);
 
     $id = '';
@@ -17,6 +27,7 @@
     $msg = '';
     $role = '';
     $description = '';
+    $vote = '';
 
     if ($result->num_rows > 0) {
       // output data of each row
@@ -33,6 +44,7 @@
         $year_of_adm = $row["year of admission"];
         $msg = $row["message"];
         $role = $row['role'];
+        $vote = $row['vote'];
         $description = $row['description'];
     }
     } else {
@@ -135,18 +147,73 @@
     </div>
     <!-- Header End -->
 
+        <!-- popup -->
+     <!-- <div class="popup" id="popup" style="visibility: hidden; z-index: 1"> -->
+
+         <form method="POST" action="update_candidate.php" enctype="multipart/form-data" name="new_cand" id="popup" style="display: none;">
+            <div class="container-fluid py-5">
+                <div class="container py-5">
+                    <div class="bg-appointment rounded">
+                        <div class="row h-100 align-items-center justify-content-center">
+                            <div class="col-lg-6 py-5">
+                                <div class="rounded p-5 my-5" style="background: rgba(55, 55, 63, .7);">
+                                    <h1 class="text-center text-white mb-4">Edit Cadndidate</h1>
+                                    <p style="color: white">Change the neccessory feilds and save changes.</p>
+                                    <form>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="f_name" id="f_name" value="<?php echo $fname; ?>" placeholder="first name">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" value="<?php echo $lname; ?>" type="text" name="l_name" id="l_name" placeholder="last name">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" name="email" id="email" value="<?php echo $email; ?>" placeholder="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" value="<?php echo $department; ?>" type="text" name="department" id="department" placeholder="department">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" value="<?php echo $class; ?>" name="class" id="class" placeholder="class">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" value="<?php echo $mobile; ?>" type="text" name="mobile" id="mobile" placeholder="mobile">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" value="<?php echo $msg; ?>" type="text" name="message" id="message" placeholder="message">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" value="<?php echo $description; ?>" name="description" id="description" placeholder="description">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="checkbox" name="agree" id="agree" style="width: 20px;margin-top: 20px;"><label style="color: red; margin-left: 10px;"><span style="color: #09FF00;">I agree</span> all the above details are correct.</label></input>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">Save</button>
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+
+     <!-- popup end -->
+
     <center><p class="m-0 display-4 text-primary text-uppercase">Candidate Details</p></center>
-    <div style="display: flex; width: 70%; margin: 70px auto;">
+    <div style="width: 70%; margin: 70px auto;" class="cand_detail_body">
         <div style="margin-right: 70px;">
             <?php 
-                echo "<img src='img/".$photo_url.'\''."width='350px'>";
+                echo "<center><img src='img/".$photo_url.'\''."width='350px'><br><br><h2 style='font-size:26px;color:#B49C73;'>Votes : ".$vote."</h2></center>";
 
              ?> 
         </div>
         <div>
             <?php 
 
-            echo "<h1>".$fname." ".$lname." (".$age.") - (as ".$role.")</h1>
+            echo "<h1>".$fname." ".$lname." (".$age.") - (as ".$role.") <a onclick=\"on_edit()\" class=\"btn btn-primary mr-3 d-none d-lg-block\">Edit</a></h1>
                 <p><b>Email : </b>".$email."</p>
                 <h4>Message:</h4>
                 <p>".$msg."</p>
@@ -275,7 +342,13 @@
 </body>
 <script type="text/javascript">
    
+function on_edit(){
 
+    popup.style.display = "block";
+}
+function on_save(){
+        popup.style.display = "none";
+    }
 </script>
 
 </html>

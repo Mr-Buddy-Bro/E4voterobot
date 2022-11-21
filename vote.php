@@ -2,24 +2,27 @@
 include('database_conn.php');
 
 
-    $email = $_GET['email'];
+    $voter_email = $_GET['email'];
 
-    if (isset($email)) {
-        setcookie('v_email', $email, time() + (86400), "/");
+    if (isset($voter_email)) {
+        setcookie('v_email', $voter_email, time() + (86400), "/");
     }else{
-        $email = $_COOKIE['v_email'];
+        $voter_email = $_COOKIE['v_email'];
     }
 
     $filter = $_GET['filter'];
     
 
-    
-    // $row = $result->fetch_assoc();
-
 //get voter
-    $msql = "SELECT * FROM voter WHERE email='$email'";
+    $msql = "SELECT * FROM voter WHERE email='$voter_email'";
     $mresult = $conn->query($msql);
     $mrow = $mresult->fetch_assoc();
+
+    $r_chairman = $mrow['v_chairman'];
+    $r_vice_chairman = $mrow['v_vice_chairman'];
+    $r_secretary = $mrow['v_secretary'];
+    $r_joint_secretary = $mrow['v_joint_secretary'];
+    $r_councilor = $mrow['v_councilor'];
 
     if ($mresult->num_rows > 0) {
       // output data of each row
@@ -172,150 +175,265 @@ include('database_conn.php');
         </div>
     </div>
     <!-- Header End -->
-
     <div class="cen_content">
 
         <!-- ##################################################################### -->
-        <h1>Candidates</h1>
+        <h1>Candidates</h1><br>
 
         <div style="align-items: center;">
-            <!-- put a for loop over here  -->
-            <?php
-            
-                //////////////////////////////////////
-                if ($mrow['v_chairman'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_chairman\',1)">CHAIRMAN</div><div style="display:none" id="v_chairman"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled" ">CHAIRMAN</div>'; 
+            <h2>CHAIRMAN</h2>
+            <div>
+                <?php
 
-                }
-                echo '<div><hr class="line" ></div>';
+                    $sql = "SELECT * FROM candidate WHERE role=1";
+                    $result = $conn->query($sql);
 
-                // //////////////////////////////////
-                //////////////////////////////////////
-                if ($mrow['v_vice_chairman'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_vice_chairman\',2)">VICE CHAIRMAN</div><div style="display:none" id="v_vice_chairman"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled">VICE CHAIRMAN</div>'; 
-                }
-                echo '<div><hr class="line" ></div>';
+                    if ($result->num_rows > 0) {
+                      // output data of each row
+                        $i = 1;
+                      while($row = $result->fetch_assoc()) {
+                        
+                        $id = $row["id"];
+                        $fname = $row["first name"];
+                        $lname = $row["last name"];
+                        $photo_url = $row["photo url"];
+                        $age = $row["age"];
+                        $department = $row["department"];
+                        $class = $row["class"];
+                        $email = $row["email"];
+                        $mobile = $row["mobile"];
+                        $year_of_adm = $row["year of admission"];
+                        $msg = $row["message"];
+                        $description = $row["description"];
+                         echo "<div class='card' style='width: 18rem; display: inline-block;'>
+                              <img src='img/".$photo_url."' width='100%' class='card-img-top' alt='...'>
+                              <div class='card-body'>
+                                <h5 class='card-title'>".$fname." ".$lname."</h5>
+                                <p class='card-text'>".$description."</p>
+                                ";
+                                if ($r_chairman == 0) {
+                                    echo "<a id='btn_".$id."' onclick='onVote(".$id.",\"btn_".$id."\",\"".$voter_email."\",\"v_chairman\")' class='btn btn-primary'>Vote</a></div></div>";
+                                }else{
+                                    if ($r_chairman == $id) {
+                                        echo "<a id='btn_".$id."' style='background-color:green;color:white;cursor:not-allowed;' class='btn btn-primary'>Voted</a></div></div>";
+                                    }else{
+                                        echo "<a id='btn_".$id."' style='background-color:grey;color:black;cursor:not-allowed;' class='btn btn-primary'>Vote</a></div></div>";
+                                    }
+                                    
+                                }
+                                
+                              
+                            if ($i==4) {
+                            echo "<br><br>";
+                            $i = 0;
+                            }
+                            $i = $i+1;
+                    }
+                    } else {
+                      echo "0 candidates";
+                    }
+                ?>
+            </div>
+        </div><br><br>
 
-                // //////////////////////////////////
-                //////////////////////////////////////
-                if ($mrow['v_secretary'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_secretary\',3)">SECRETARY</div><div style="display:none" id="v_secretary"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled">SECRETARY</div>'; 
-                }
-                echo '<div><hr class="line" ></div>';
+        <div style="align-items: center;">
+            <h2>VICE CHAIRMAN</h2>
+            <div>
+               <?php
 
-                // //////////////////////////////////
-                //////////////////////////////////////
-                if ($mrow['v_joint_secretary'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_joint_secretary\',4)">JOINT SECRETARY</div><div style="display:none" id="v_joint_secretary"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled">JOINT SECRETARY</div>'; 
-                }
-                echo '<div><hr class="line" ></div>';
+                    $sql = "SELECT * FROM candidate WHERE role=2";
+                    $result = $conn->query($sql);
 
-                // //////////////////////////////////
-                //////////////////////////////////////
-                if ($mrow['v_counsilor'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_counsilor\',5)">COUNSILOR</div><div style="display:none" id="v_counsilor"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled">COUNSILOR</div>'; 
-                }
-                echo '<div><hr class="line" ></div>';
+                    if ($result->num_rows > 0) {
+                      // output data of each row
+                        $i = 1;
+                      while($row = $result->fetch_assoc()) {
+                        
+                        $id = $row["id"];
+                        $fname = $row["first name"];
+                        $lname = $row["last name"];
+                        $photo_url = $row["photo url"];
+                        $age = $row["age"];
+                        $department = $row["department"];
+                        $class = $row["class"];
+                        $email = $row["email"];
+                        $mobile = $row["mobile"];
+                        $year_of_adm = $row["year of admission"];
+                        $msg = $row["message"];
+                        $description = $row["description"];
+                         echo "<div class='card' style='width: 18rem; display: inline-block;'>
+                              <img src='img/".$photo_url."' width='100%' class='card-img-top' alt='...'>
+                              <div class='card-body'>
+                                <h5 class='card-title'>".$fname." ".$lname."</h5>
+                                <p class='card-text'>".$description."</p>";
 
-                // //////////////////////////////////
-                //////////////////////////////////////
-                if ($mrow['v_secretary_fine_arts_club'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_secretary_fine_arts_club\',6)">SECRETARY FINE ARTS CLUB</div><div style="display:none" id="v_secretary_fine_arts_club"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled">SECRETARY FINE ARTS CLUB</div>'; 
-                }
-                echo '<div><hr class="line" ></div>';
+                                if ($r_vice_chairman == 0) {
+                                    echo "<a id='btn_".$id."' onclick='onVote(".$id.",\"btn_".$id."\",\"".$voter_email."\",\"v_vice_chairman\")' class='btn btn-primary'>Vote</a></div></div>";
+                                }else{
+                                    if ($r_vice_chairman == $id) {
+                                        echo "<a id='btn_".$id."' style='background-color:green;color:white;cursor:not-allowed;' class='btn btn-primary'>Voted</a></div></div>";
+                                    }else{
+                                        echo "<a id='btn_".$id."' style='background-color:grey;color:black;cursor:not-allowed;' class='btn btn-primary'>Vote</a></div></div>";
+                                    }
+                                    
+                                }
 
-                // //////////////////////////////////
-                //////////////////////////////////////
-                if ($mrow['v_magazine_editor'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_magazine_editor\',7)">MAGAZINE EDITOR</div><div style="display:none" id="v_magazine_editor"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled">MAGAZINE EDITOR</div>'; 
-                }
-                echo '<div><hr class="line" ></div>';
 
-                // //////////////////////////////////
-                //////////////////////////////////////
-                if ($mrow['v_general_captain'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_general_captain\',8)">GENERAL CAPTAIN</div><div style="display:none" id="v_general_captain"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled">GENERAL CAPTAIN</div>'; 
-                }
-                echo '<div><hr class="line" ></div>';
+                            if ($i==4) {
+                            echo "<br><br>";
+                            $i = 0;
+                            }
+                            $i = $i+1;
+                    }
+                    } else {
+                      echo "0 candidates";
+                    }
+                ?>
+            </div>
+        </div><br><br>
 
-                // //////////////////////////////////
-                //////////////////////////////////////
-                if ($mrow['v_II_dc_representative'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_II_dc_representative\',9)">II DC REPRESENTATIVE</div><div style="display:none" id="v_II_dc_representative"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled">II DC REPRESENTATIVE</div>'; 
-                }
-                echo '<div><hr class="line" ></div>';
+        <div style="align-items: center;">
+            <h2>SECRETARY</h2>
+            <div>
+               <?php
 
-                // //////////////////////////////////
-                //////////////////////////////////////
-                if ($mrow['v_III_dc_representative'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_III_dc_representative\',10)">III DC REPRESENTATIVE</div><div style="display:none" id="v_III_dc_representative"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled">III DC REPRESENTATIVE</div>'; 
-                }
-                echo '<div><hr class="line" ></div>';
+                    $sql = "SELECT * FROM candidate WHERE role=3";
+                    $result = $conn->query($sql);
 
-                // //////////////////////////////////
-                //////////////////////////////////////
-                if ($mrow['v_pg_dc_representative'] == 0) {
-                   echo '<div class="choose-btn" onclick="candidate_detail(\'v_pg_dc_representative\',11)">PG DC REPRESENTATIVE</div><div style="display:none" id="v_pg_dc_representative"></div>'; 
-                }
-                else{
-                    echo '<div class="choose-btn-disabled">PG DC REPRESENTATIVE</div>'; 
-                }
-                echo '<div><hr class="line" ></div>';
+                    if ($result->num_rows > 0) {
+                      // output data of each row
+                        $i = 1;
+                      while($row = $result->fetch_assoc()) {
+                        
+                        $id = $row["id"];
+                        $fname = $row["first name"];
+                        $lname = $row["last name"];
+                        $photo_url = $row["photo url"];
+                        $age = $row["age"];
+                        $department = $row["department"];
+                        $class = $row["class"];
+                        $email = $row["email"];
+                        $mobile = $row["mobile"];
+                        $year_of_adm = $row["year of admission"];
+                        $msg = $row["message"];
+                        $description = $row["description"];
+                         echo "<div class='card' style='width: 18rem; display: inline-block;'>
+                              <img src='img/".$photo_url."' width='100%' class='card-img-top' alt='...'>
+                              <div class='card-body'>
+                                <h5 class='card-title'>".$fname." ".$lname."</h5>
+                                <p class='card-text'>".$description."</p>
+                                <a id='btn_".$id."' onclick='onVote(".$id.",\"btn_".$id."\",\"".$voter_email."\",\"v_secretary\")' class='btn btn-primary'>Vote</a>
+                              </div>
+                            </div>";
+                            if ($i==4) {
+                            echo "<br><br>";
+                            $i = 0;
+                            }
+                            $i = $i+1;
+                    }
+                    } else {
+                      echo "0 candidates";
+                    }
+                ?>
+            </div>
+        </div><br><br>
 
-                // //////////////////////////////////
-                
-            
-            ?>
+        <div style="align-items: center;">
+            <h2>JOINT SECREATARY</h2>
+            <div>
+               <?php
 
-        </div>
+                    $sql = "SELECT * FROM candidate WHERE role=4";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                      // output data of each row
+                        $i = 1;
+                      while($row = $result->fetch_assoc()) {
+                        
+                        $id = $row["id"];
+                        $fname = $row["first name"];
+                        $lname = $row["last name"];
+                        $photo_url = $row["photo url"];
+                        $age = $row["age"];
+                        $department = $row["department"];
+                        $class = $row["class"];
+                        $email = $row["email"];
+                        $mobile = $row["mobile"];
+                        $year_of_adm = $row["year of admission"];
+                        $msg = $row["message"];
+                        $description = $row["description"];
+                         echo "<div class='card' style='width: 18rem; display: inline-block;'>
+                              <img src='img/".$photo_url."' width='100%' class='card-img-top' alt='...'>
+                              <div class='card-body'>
+                                <h5 class='card-title'>".$fname." ".$lname."</h5>
+                                <p class='card-text'>".$description."</p>
+                                <a id='btn_".$id."' onclick='onVote(".$id.",\"btn_".$id."\",\"".$voter_email."\",\"v_joint_secretary\")' class='btn btn-primary'>Vote</a>
+                              </div>
+                            </div>";
+                            if ($i==4) {
+                            echo "<br><br>";
+                            $i = 0;
+                            }
+                            $i = $i+1;
+                    }
+                    } else {
+                      echo "0 candidates";
+                    }
+                ?>
+            </div>
+        </div><br><br>
+
+        <div style="align-items: center;">
+            <h2>COUNCILOR</h2>
+            <div>
+               <?php
+
+                    $sql = "SELECT * FROM candidate WHERE role=5";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                      // output data of each row
+                        $i = 1;
+                      while($row = $result->fetch_assoc()) {
+                        
+                        $id = $row["id"];
+                        $fname = $row["first name"];
+                        $lname = $row["last name"];
+                        $photo_url = $row["photo url"];
+                        $age = $row["age"];
+                        $department = $row["department"];
+                        $class = $row["class"];
+                        $email = $row["email"];
+                        $mobile = $row["mobile"];
+                        $year_of_adm = $row["year of admission"];
+                        $msg = $row["message"];
+                        $description = $row["description"];
+                         echo "<div class='card' style='width: 18rem; display: inline-block;'>
+                              <img src='img/".$photo_url."' width='100%' class='card-img-top' alt='...'>
+                              <div class='card-body'>
+                                <h5 class='card-title'>".$fname." ".$lname."</h5>
+                                <p class='card-text'>".$description."</p>
+                                <a id='btn_".$id."' onclick='onVote(".$id.",\"btn_".$id."\",\"v_councilor\")' class='btn btn-primary'>Vote</a>
+                              </div>
+                            </div>";
+                            if ($i==4) {
+                            echo "<br><br>";
+                            $i = 0;
+                            }
+                            $i = $i+1;
+                    }
+                    } else {
+                      echo "0 candidates";
+                    }
+                ?>
+            </div>
+        </div><br><br>
 
     <!-- ############################################# -->
         <br>
 
-        <select onchange="onfilter()" id="filter" name="filter" style="border: 2px solid #8f7528;padding: 10px; border-radius: 20px;">
-            <option value="-1">--Choose--</option>
-            <option value="1">CHAIRMAN</option>
-            <option value="2">VICE CHAIRMAN</option>
-            <option value="3">SECRETARY</option>
-            <option value="4">JOINT SECREATARY</option>
-            <option value="5">COUNCILOR</option>
-            <option value="6">SERETARY FINE ARTS CLUB</option>
-            <option value="7">MAGAZINE EDITOR</option>
-            <option value="8">GENERAL CAPTAIN</option>
-            <option value="9">II DC REPRESENTATIVE</option>
-            <option value="10">III DC REPRESENTATIVE</option>
-            <option value="11">PG REPRESENTATIVE</option>
-        </select>
+        <a class="btn btn-primary" href="index.html" target="self">Finish</a>
 
        
         <div style="display: block;justify-content: center; margin: 50px 0;">
@@ -431,6 +549,7 @@ include('database_conn.php');
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
     <script type="text/javascript">
 
     function candidate_detail(data, filter){
@@ -444,15 +563,7 @@ include('database_conn.php');
             document.getElementById(data).style.display ='none'
         }
         else{
-            $.ajax({
-                url:'get_candidate.php',
-                method:'POST',
-                data: {'filter':filter},
-                success:function(resu){
-                    console.log('res : '+resu)
-                    // document.write(res);
-                }
-            })
+            
             document.getElementById(data).style.display ='block'
             document.getElementById(data).innerHTML='<h1>Hi </h1><?php
 
@@ -495,6 +606,23 @@ include('database_conn.php');
         ?>'
 
         }
+    }
+
+    function onVote(id, tagid, voter_id, role){
+        let btnVote = document.getElementById(tagid);
+        btnVote.innerHTML = "Voted";
+        btnVote.style.backgroundColor = 'green';
+        btnVote.style.color = 'white';
+
+        $.ajax({
+            type:'POST',
+            url:'add_vote.php',
+            data:{'cand_id':id, 'voter_email': voter_id, 'role':role},
+            success:function(res) {
+                console.log(res);
+                window.location.reload();
+            }
+        });
     }
 
     let popup = document.getElementById('popup');

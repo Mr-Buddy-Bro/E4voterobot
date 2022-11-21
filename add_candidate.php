@@ -17,7 +17,7 @@ include('database_conn.php');
         $repass = $_POST['repassword'];
         $role = $_POST['role'];
 
-        if(isset($_POST["submit"]) && isset($_FILES['photo'])) {
+        if(isset($_FILES['photo'])) {
 
                   $img_name = $_FILES['photo']['name'];
                   $img_size = $_FILES['photo']['size'];
@@ -54,6 +54,7 @@ include('database_conn.php');
         if ($conn->query($sql) === TRUE) {
             // new recorde done...
             echo 'success';
+            header("Location: candidate_details.php");
 
                 //Check if image file is a actual image or fake image
                 

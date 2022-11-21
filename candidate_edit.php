@@ -18,6 +18,7 @@
     $msg = '';
     $role = '';
     $description = '';
+    $gender = '';
 
     if ($result->num_rows > 0) {
       // output data of each row
@@ -35,6 +36,7 @@
         $msg = $row["message"];
         $role = $row['role'];
         $description = $row['description'];
+        $gender = $row['gender'];
     }
     } else {
       echo "0 results";
@@ -144,8 +146,12 @@
                 <div class="col-lg-7 mt-4 mt-lg-0">
                     <h2 class="position-relative text-center bg-white text-primary rounded p-3 mt-4 mb-4 d-none d-lg-block" style="width: 350px; margin-left: -205px;">Name: <?php echo $fname.' '.$lname; ?></h2>
                     <h6 class="text-uppercase">Postion: <?php echo $role; ?></h6>
-                    <h1 class="mb-4">Department : <?php echo $department; ?></h1>
-                     <p> </p>
+                    <h1 class="mb-4">Department : <?php echo $department." (".$class." - ".$year_of_adm.")"; ?></h1>
+                    <h4>Age : <?php echo $age; ?></h4>
+                    <h4>Gender : <?php echo $gender; ?></h4>
+                    <h4>Mobile : <?php echo $mobile; ?></h4>
+                     <p style="font-size:18px;"><b><big>Message : </big><br></b><?php echo $msg; ?></p>
+                     <p style="font-size:18px;"><b><big>Description : </big><br></b><?php echo $description; ?></p>
                     <a href="" class="btn btn-primary mt-2">Add</a>
                 </div>
             </div>

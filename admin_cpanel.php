@@ -133,6 +133,51 @@
         </div>
     </div>
     <!-- Header End -->
+
+<!-- popup -->
+
+         <form method="GET" action="" id="popup" style="display:none;">
+            <div class="container-fluid py-5">
+                <div class="container py-5">
+                    <div class="bg-appointment rounded">
+                        <div class="row h-100 align-items-center justify-content-center">
+                            <div class="col-lg-6 py-5">
+                                <div class="rounded p-5 my-5" style="background: rgba(55, 55, 63, .7);">
+                                    <h1 class="text-center text-white mb-4">Edit Election details</h1>
+                                    <p style="color: white">Make changes and save it from here.</p>
+                                    <form>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" id="elec_name" placeholder="Election name">
+                                        </div>
+                                        <div class="form-group">
+                                            <p style="color: white"><small>Election conduct date</small></p>
+                                            <input class="form-control border-0 p-4" type="date" id="elec_con_date" placeholder="Election conduct date">
+                                        </div>
+                                        <div class="form-group">
+                                            <p style="color: white"><small>Election Submission date limit</small></p>
+                                            <input class="form-control border-0 p-4" type="date" id="elec_sub_date" placeholder="submission date">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control border-0 p-4" type="text" id="elec_desc" placeholder="description">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="checkbox" id="agree" style="width: 20px;"><label style="color: red; margin-left: 10px;"><span style="color: #09FF00;">I agree</span> all the above details are correct.</label></input>
+                                        </div>
+                                        <div>
+                                            <button onclick="on_save()" class="btn btn-primary btn-block border-0 py-3">Save</button>
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+
+            <!-- popup end -->
+
     <div id="panel_content">
         <div>
             <br>
@@ -150,31 +195,6 @@
     <div style="margin: 50px auto; width: 70%;">
         <p style="color: black; border: 1px solid #fcc058; border-radius: 10px; background-color: #fcc058; padding: 10px;"><?php echo $description; ?></p>
     </div>
-
-    <!-- popup -->
-     <div class="popup" id="popup" style="visibility: hidden;">
-        <h2 style="color:white;font-weight:bold;width: 100%; text-align: right; cursor:pointer;" onclick="btn_close_pop()">x</h2>
-        <center>
-            
-
-                <h2 style="color: #DE9D06">Edit Election details</h2>
-                <p style="color: white">Make changes and save it from here.</p>
-                <input type="text" id="elec_name" placeholder="Election name"><br>
-                <label style="color: white" class="my_date">Election conduct date</label><br>
-                <input type="date" id="elec_con_date" placeholder="Election conduct date"><br>
-                <label style="color: white" class="my_date">Candidate details submission date</label><br>
-                <input type="date" id="elec_sub_date" placeholder="submission date"><br><br>
-                <input type="text" id="elec_desc" placeholder="description"><br><br>
-                <input type="checkbox" id="agree" style="width: 10px;"><label style="color: red; margin-left: 10px;"><span style="color: #09FF00;">I agree</span> all the above details are correct.</label></input>
-                <br>
-                <button onclick="on_save()" style="background-color: #DE9D06;border-radius: 20px; font-weight: bold;  padding: 10px 50px;">Save</button>
-        
-            
-        </center>
-     </div>
-
-     <!-- popup end -->
-
      
     <!-- Footer Start -->
     <div class="container-fluid bg-secondary text-white pt-5 px-sm-3 px-md-5" style="margin-top: 90px;">
@@ -290,7 +310,7 @@
     let popup = document.getElementById('popup');
 
     function on_edit(){
-        popup.style.visibility = "visible";
+        popup.style.display = "block";
     }
     function on_save(){
 
@@ -310,10 +330,10 @@
             }
         });
 
-        popup.style.visibility = "hidden";
+        popup.style.display = "none";
     }
     function btn_close_pop(){
-        popup.style.visibility = "hidden";
+        popup.style.visibility = "none";
     }
 
 </script>
